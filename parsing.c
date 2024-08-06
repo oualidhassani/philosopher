@@ -25,9 +25,12 @@ void	ft_putstr_fd(char *s, int fd)
 		i++;
 	}
 }
-
 void parsing(int ac, char **av)
 {
-    if(ac >= 6 || ac < 5)  
-        ft_putstr_fd("Error", 2);    
+	(void)av;
+    if(ac >= 6 || ac < 5)
+	{
+        ft_putstr_fd("Error\n", 2);    
+		exit(1);
+	}
 }

@@ -4,7 +4,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror  -ggdb3 -fsanitize=address
 
-SRCS = main.c parsing.c
+SRCS = main.c parsing.c init.c utils.c
 
 OBJ = $(SRCS:.c=.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
+/*   By: oualid <oualid@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:34:38 by ohassani          #+#    #+#             */
-/*   Updated: 2024/07/15 19:38:10 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/07/24 00:30:19 by oualid           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,13 @@ void *non_function()
 int  main(int ac, char **av)
 {
     parsing(ac, av);
-    pthread_t t1;
+    t_arg arg;
+    pthread_mutex_t *fork;
+    t_philo *philos;
     
-    pthread_create(&t1, NULL, &non_function , NULL);
-    pthread_join(t1, NULL);
+    init_arg(&arg, av);
+    fork = init_forks(&arg);
+    philos = init_philo(&arg, fork);
+
+    (void)philos;
 }
