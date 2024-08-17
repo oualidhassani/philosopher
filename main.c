@@ -17,16 +17,18 @@ void *non_function()
     printf("this the threads\n");
     return 0;
 }
-int  main(int ac, char **av)
+int  main(int argc, char **av)
 {
-    parsing(ac, av);
+    parsing(argc, av);
     t_arg arg;
     pthread_mutex_t *fork;
     t_philo *philos;
-    
-    init_arg(&arg, av);
+    if (argc == 5 || argc == 6)    
+    	init_arg(&arg, av);
     fork = init_forks(&arg);
     philos = init_philo(&arg, fork);
 
+    if(launch_thread(&arg, philos, fork) == 0)
+        return(EXIT_FAILURE);
     (void)philos;
 }
