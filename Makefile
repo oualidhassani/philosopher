@@ -1,10 +1,10 @@
-NAME = so_long
+NAME = philo
 
 CC = cc
 
 CFLAGS = -Wall -Wextra -Werror  -ggdb3 -fsanitize=address
 
-SRCS = main.c parsing.c init.c utils.c
+SRCS = main.c parsing.c init.c utils.c monitoring.c forks.c
 
 OBJ = $(SRCS:.c=.o)
 
@@ -21,11 +21,9 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean : 
-		@$(RM) $(OBJ)
+		@$(RM) $(OBJ) 
 
 fclean :
 		@$(RM) $(OBJ) $(NAME)
 
 re : fclean all
-
-.SECONDARY : ${OBJ}

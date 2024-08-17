@@ -9,6 +9,7 @@
 #include <stdbool.h>
 
 #define INIT_MUTEX "fail the mutex initialization"
+#define FAIL_THREAD "fail the creation of the thread"
 
 // struct of agrs
 typedef struct s_arg
@@ -29,7 +30,11 @@ typedef struct s_philo
     suseconds_t         time;
     pthread_mutex_t     *left;
     pthread_mutex_t     *right;
+    int     meals_eat;
     suseconds_t     start_time;
+    suseconds_t     last_meal;
+    pthread_t       t_my_enum;
+    t_arg       *arg;
 } t_philo;
 
 // struct of enum
@@ -40,6 +45,7 @@ typedef enum e_my_enum
     SLEEP,
     DEAD,
     FORK,
+    TAKE_FORK,
 
 }   t_my_enum;
 
@@ -59,5 +65,17 @@ void    free_forks(pthread_mutex_t *forks, int until);
 // destroy
 int	main_destroy(t_arg *arg, t_philo *philo, pthread_mutex_t *forks, char *error_msg);
 
+// create the thread
+int     launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks);
+void monitoring(t_philo *philos, t_my_enum action_enum);
+
+// get the time
+suseconds_t get_current_time();
+
+// the forks
+void pick_the_fork(t_philo *philo);
+void drop_the_fork(t_philo *philo);
+void eat_that_meal(t_philo *philo);
+void philo_sleeping(t_philo *philo);
 
 #endif
