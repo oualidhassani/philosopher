@@ -49,21 +49,23 @@ void *routine(void *_philo)
     return(NULL);
 }
 
-int     launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
+int launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
 {
     int i = 0;
 
     while(arg->nbrphilo > i)
     {
         philo[i].start_time = get_current_time();
-        if(pthread_create(&philo[i].t_my_enum, NULL, routine, &arg->mutex) != 0)
+        if(pthread_create(&philo[i].t_my_enum, NULL, routine, &philo[i]) != 0)
         {
             main_destroy(arg, philo ,forks, FAIL_THREAD);
             return(0);
         }
+        i++;
     }
     return(1);
 }
+
 
 void monitoring(t_philo *philos, t_my_enum action_enum)
 {
