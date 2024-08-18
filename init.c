@@ -15,6 +15,7 @@ t_philo    *init_philo(t_arg *arg, pthread_mutex_t *the_forks)
         philo[i].right = &the_forks[i] + 1;
         philo[i].meals_eat = 0;
         philo[i].last_meal = get_current_time();
+        philo[i].arg = arg;
         i++;
     }
 

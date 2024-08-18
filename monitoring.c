@@ -15,6 +15,7 @@ void eat_that_meal(t_philo *philo)
     pthread_mutex_unlock(&philo->arg->mutex);
     monitoring(philo, EAT);
     usleep(philo->arg->time_to_eat * 1000);
+    drop_the_fork(philo);
 }
 
 void philo_sleeping(t_philo *philo)
@@ -29,6 +30,9 @@ void *routine(void *_philo)
     t_philo *philo;
     philo = (t_philo *)_philo;
 
+    // if(philo == NULL || philo->arg == NULL)
+    //     return(NULL);
+    printf("routing\n");
     if(philo->arg->nbrphilo == 1)
     {
         monitoring(philo, TAKE_FORK);
@@ -45,6 +49,7 @@ void *routine(void *_philo)
         eat_that_meal(philo);
         philo_sleeping(philo);
         monitoring(philo, THINK);
+        pthread_mutex_unlock(&philo->arg->mutex);
     }
     return(NULL);
 }
@@ -63,6 +68,9 @@ int launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
         }
         i++;
     }
+     for (i = 0; i < arg->nbrphilo; i++) {
+        pthread_join(philo[i].t_my_enum, NULL);  // Join all threads
+     }
     return(1);
 }
 
@@ -79,8 +87,8 @@ void monitoring(t_philo *philos, t_my_enum action_enum)
         pthread_mutex_unlock(&philos->arg->mutex);
         return ;
     }
-    pthread_mutex_unlock(&philos->arg->mutex);
 
     timesta = get_current_time() - philos->start_time;
     printf("%d %d %s", timesta, philos->nbr_philo1, current_action[action_enum]);
+    pthread_mutex_unlock(&philos->arg->mutex);
 }
