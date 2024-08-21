@@ -12,7 +12,7 @@ t_philo    *init_philo(t_arg *arg, pthread_mutex_t *the_forks)
     {
         philo[i].nbr_philo1 = i + 1;
         philo[i].left = &the_forks[i];
-        philo[i].right = &the_forks[i] + 1;
+        philo[i].right = &the_forks[(i + 1) % arg->nbrphilo];
         philo[i].meals_eat = 0;
         philo[i].last_meal = get_current_time();
         philo[i].arg = arg;
@@ -21,7 +21,7 @@ t_philo    *init_philo(t_arg *arg, pthread_mutex_t *the_forks)
 
     return(philo);
 }
-void    init_arg(t_arg *arg, char **av) 
+bool    init_arg(t_arg *arg, char **av) 
 {
     arg->nbrphilo = ft_atoi(av[1]);
     arg->time_to_die = ft_atoi(av[2]);
@@ -38,9 +38,10 @@ void    init_arg(t_arg *arg, char **av)
     if(pthread_mutex_init(&arg->mutex, NULL) != 0)
     {
         main_destroy(0, NULL, NULL, INIT_MUTEX);
-        return ;
+        return (false);
     }
     arg->the_end = false;
+    return(true);
 }
 
 pthread_mutex_t *init_forks(t_arg *arg)
@@ -65,6 +66,6 @@ suseconds_t get_current_time()
 {
     struct timeval time;
 
-    gettimeofday(&time,NULL);
-    return ((time.tv_sec / 1000) + (time.tv_usec * 1000));
+    gettimeofday(&time, NULL);
+    return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }

@@ -23,8 +23,9 @@ int  main(int argc, char **av)
     t_arg arg;
     pthread_mutex_t *fork;
     t_philo *philos;
-    if (argc == 5 || argc == 6)    
-    	init_arg(&arg, av);
+    // if (argc == 5 || a rgc == 6)    
+    if(!init_arg(&arg, av))
+        return(EXIT_FAILURE);
     fork = init_forks(&arg);
     philos = init_philo(&arg, fork);
 

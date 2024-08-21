@@ -1,10 +1,11 @@
 #include "philo.h"
 
-#define EAT EAT
-#define SLEEP SLEEP
-#define THINK THINK
-#define DEAD DEAD
-#define TAKE_FORK TAKE_FORK
+#define TAKE_FORK_STR "has taken a fork\n"
+#define DROP_FORK_STR "has dropped a fork\n"
+#define EAT_STR "is eating \n"
+#define THINK_STR "is thinking \n"
+#define SLEEP_STR "is sleeping \n"
+#define DEAD_STR "is dead \n"
 
 void eat_that_meal(t_philo *philo)
 {
@@ -14,14 +15,14 @@ void eat_that_meal(t_philo *philo)
     philo->last_meal = get_current_time();
     pthread_mutex_unlock(&philo->arg->mutex);
     monitoring(philo, EAT);
-    usleep(philo->arg->time_to_eat * 1000);
+    usleep(philo->arg->time_to_eat * MICRO_SEC);
     drop_the_fork(philo);
 }
 
 void philo_sleeping(t_philo *philo)
 {
     monitoring(philo, SLEEP);
-    usleep(philo->arg->time_sleep * 1000);
+    usleep(philo->arg->time_sleep * MICRO_SEC);
 }
 
 void *routine(void *_philo)
@@ -32,12 +33,12 @@ void *routine(void *_philo)
 
     // if(philo == NULL || philo->arg == NULL)
     //     return(NULL);
-    printf("routing\n");
     if(philo->arg->nbrphilo == 1)
     {
-        monitoring(philo, TAKE_FORK);
+        monitoring(philo, FORK);
         return(NULL);
     }
+    
     while(1)
     {
         pthread_mutex_lock(&philo->arg->mutex);
@@ -46,10 +47,10 @@ void *routine(void *_philo)
             pthread_mutex_unlock(&philo->arg->mutex);
             break;
         }
+        pthread_mutex_unlock(&philo->arg->mutex);
         eat_that_meal(philo);
         philo_sleeping(philo);
         monitoring(philo, THINK);
-        pthread_mutex_unlock(&philo->arg->mutex);
     }
     return(NULL);
 }
@@ -64,26 +65,35 @@ int launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
         if(pthread_create(&philo[i].t_my_enum, NULL, routine, &philo[i]) != 0)
         {
             main_destroy(arg, philo ,forks, FAIL_THREAD);
-            return(0);
+            return(1);
         }
         i++;
     }
-     for (i = 0; i < arg->nbrphilo; i++) {
-        pthread_join(philo[i].t_my_enum, NULL);  // Join all threads
+    guard(philo);
+    i = 0;
+     while(i < philo->arg->nbrphilo)
+     {
+        if(pthread_join(philo[i].t_my_enum, NULL) != 0)
+        {
+            main_destroy(arg, philo, forks, JOIN_FAIL);
+            return(1);
+        }
+        i++;
      }
-    return(1);
+        return(0);
 }
-
 
 void monitoring(t_philo *philos, t_my_enum action_enum)
 {
-    char *current_action[5] = {"is eating", "is sleeping", "is thinking", "is dead", "take the fork"};
+    char *current_action[6] = {EAT_STR, THINK_STR,
+		SLEEP_STR, DEAD_STR , TAKE_FORK_STR, DROP_FORK_STR};
 
     suseconds_t timesta;
 
     pthread_mutex_lock(&philos->arg->mutex);
     if(philos->arg->the_end)
     {
+        // printf("i enter here second one\n");
         pthread_mutex_unlock(&philos->arg->mutex);
         return ;
     }

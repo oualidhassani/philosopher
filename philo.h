@@ -10,7 +10,9 @@
 
 #define INIT_MUTEX "fail the mutex initialization"
 #define FAIL_THREAD "fail the creation of the thread"
+#define JOIN_FAIL "fail the join"
 
+#define MICRO_SEC 1000
 // struct of agrs
 typedef struct s_arg
 {
@@ -45,7 +47,7 @@ typedef enum e_my_enum
     SLEEP,
     DEAD,
     FORK,
-    TAKE_FORK,
+    DROP,
 
 }   t_my_enum;
 
@@ -54,7 +56,7 @@ void    parsing(int ac, char **av);
 
 // init 
 pthread_mutex_t     *init_forks(t_arg *arg);
-void                init_arg(t_arg *arg, char **av);
+bool    init_arg(t_arg *arg, char **av) ;
 t_philo     *init_philo(t_arg *arg, pthread_mutex_t *the_forks);
 
 // utils
@@ -77,5 +79,9 @@ void pick_the_fork(t_philo *philo);
 void drop_the_fork(t_philo *philo);
 void eat_that_meal(t_philo *philo);
 void philo_sleeping(t_philo *philo);
+
+// the dead of the philos 
+suseconds_t starv(t_philo *philos);
+void guard(t_philo *philos);
 
 #endif

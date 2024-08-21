@@ -2,9 +2,9 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror  -ggdb3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror 
 
-SRCS = main.c parsing.c init.c utils.c monitoring.c forks.c
+SRCS = main.c parsing.c init.c utils.c monitoring.c forks.c dead_philo.c
 
 OBJ = $(SRCS:.c=.o)
 
