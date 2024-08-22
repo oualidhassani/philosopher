@@ -11,6 +11,9 @@
 #define INIT_MUTEX "fail the mutex initialization"
 #define FAIL_THREAD "fail the creation of the thread"
 #define JOIN_FAIL "fail the join"
+#define MALLOC_FAIL "malloc fail"
+#define ALL_DONE "destroy all after launch the threads"
+#define PARSING_ERROR "error in arguments"
 
 #define MICRO_SEC 1000
 // struct of agrs
@@ -52,7 +55,7 @@ typedef enum e_my_enum
 }   t_my_enum;
 
 //parsing
-void    parsing(int ac, char **av);
+int    parsing(int ac, char **av);
 
 // init 
 pthread_mutex_t     *init_forks(t_arg *arg);

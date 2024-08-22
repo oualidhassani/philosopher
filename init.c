@@ -4,7 +4,7 @@ t_philo    *init_philo(t_arg *arg, pthread_mutex_t *the_forks)
 {
     t_philo *philo;
 
-    philo = malloc(arg->nbrphilo *sizeof(pthread_mutex_t));
+    philo = malloc(arg->nbrphilo *sizeof(t_philo));
 
     int i  = 0;
 
@@ -51,8 +51,8 @@ pthread_mutex_t *init_forks(t_arg *arg)
     fork = malloc(arg->nbrphilo * sizeof(pthread_mutex_t));
 
     int i  = 0;
-    // if(!fork)
-
+    if(!fork)
+        main_destroy(arg, NULL, NULL, MALLOC_FAIL);
     while(arg->nbrphilo > i)
     {
         if(pthread_mutex_init(&fork[i], NULL) != 0)

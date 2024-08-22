@@ -12,18 +12,13 @@
 
 #include "philo.h"
 
-void *non_function()
-{
-    printf("this the threads\n");
-    return 0;
-}
 int  main(int argc, char **av)
 {
-    parsing(argc, av);
+    if(parsing(argc, av))
+        return(EXIT_FAILURE);
     t_arg arg;
     pthread_mutex_t *fork;
     t_philo *philos;
-    // if (argc == 5 || a rgc == 6)    
     if(!init_arg(&arg, av))
         return(EXIT_FAILURE);
     fork = init_forks(&arg);
@@ -31,5 +26,5 @@ int  main(int argc, char **av)
 
     if(launch_thread(&arg, philos, fork) == 0)
         return(EXIT_FAILURE);
-    (void)philos;
+    main_destroy(&arg, philos, fork ,ALL_DONE);
 }

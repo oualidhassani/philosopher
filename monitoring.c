@@ -31,8 +31,8 @@ void *routine(void *_philo)
     t_philo *philo;
     philo = (t_philo *)_philo;
 
-    // if(philo == NULL || philo->arg == NULL)
-    //     return(NULL);
+    if(philo == NULL || philo->arg == NULL)
+        return(NULL);
     if(philo->arg->nbrphilo == 1)
     {
         monitoring(philo, FORK);
@@ -93,7 +93,6 @@ void monitoring(t_philo *philos, t_my_enum action_enum)
     pthread_mutex_lock(&philos->arg->mutex);
     if(philos->arg->the_end)
     {
-        // printf("i enter here second one\n");
         pthread_mutex_unlock(&philos->arg->mutex);
         return ;
     }

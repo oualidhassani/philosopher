@@ -12,6 +12,32 @@
 
 #include "philo.h"
 
+int	ft_isdigit(char c)
+{
+	if (c >= '0' && c <= '9')
+		return (1);
+	else
+		return (0);
+}
+
+int ft_is_digit1(char **av)
+{
+	int i = 1;
+	int j;
+	while(av[i])
+	{
+		j = 0; 
+		while(av[i][j])
+		{
+			if(ft_isdigit(av[i][j]) == 0)
+				return(1);
+			j++;
+		}
+		i++;
+	}
+	return(0);
+}
+
 void	ft_putstr_fd(char *s, int fd)
 {
 	size_t	i;
@@ -25,12 +51,13 @@ void	ft_putstr_fd(char *s, int fd)
 		i++;
 	}
 }
-void parsing(int ac, char **av)
+
+int parsing(int ac, char **av)
 {
-	(void)av;
-    if(ac > 6 || ac < 5)
+    if((ac != 5 && ac != 6) || ft_is_digit1(av) == 1)
 	{
-        ft_putstr_fd("Error\n", 2);    
-		exit(1);
-	}
+		printf("Error: Invalid arguments\n");
+		return(1);
+	} 
+	return(0);
 }

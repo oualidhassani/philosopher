@@ -14,8 +14,6 @@ suseconds_t starv(t_philo *philos)
 
 bool is_philo_dead(t_philo *philos, int *satisfed_philo)
 {
-    // printf("%d\n", philos->arg->times_each_philosopher_must_eat);
-    // printf("%d\n", philos->meals_eat);
     if(philos->arg->times_each_philosopher_must_eat > 0 && philos->meals_eat >= philos->arg->times_each_philosopher_must_eat)
         *satisfed_philo += 1;
     if(starv(philos))
@@ -35,7 +33,8 @@ void guard(t_philo *philos)
     int satisfed;
     while (1)
     {
-        int i = 0;
+        int i;
+        i = 0;
         pthread_mutex_lock(&philos->arg->mutex);
         while(philos->arg->nbrphilo > i)
         {
@@ -43,13 +42,8 @@ void guard(t_philo *philos)
                 return;
             i++;
         }
-        // printf("=======>1     %d\n", satisfed);
-        // printf("==========>%d\n", philos->arg->nbrphilo);
         if(satisfed == philos->arg->nbrphilo)
-        {
-            // printf(" i enter here one time");
             return(all_of_them_eat(philos));
-        }
         pthread_mutex_unlock(&philos->arg->mutex);
     }
 }
