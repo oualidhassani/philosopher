@@ -7,6 +7,7 @@ int ft_strlen(char *str)
 		i++;
 	return(i);
 }
+
 void destroy(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
 {
 	int i = 0;
