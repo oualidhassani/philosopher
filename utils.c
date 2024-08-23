@@ -39,6 +39,7 @@ int	main_destroy(t_arg *arg, t_philo *philo, pthread_mutex_t *forks, char *error
 	return(EXIT_FAILURE);
 }
 
+
 void free_forks(pthread_mutex_t *forks, int until)
 {
     int i;

@@ -15,14 +15,14 @@ void eat_that_meal(t_philo *philo)
     philo->last_meal = get_current_time();
     pthread_mutex_unlock(&philo->arg->mutex);
     monitoring(philo, EAT);
-    usleep(philo->arg->time_to_eat * MICRO_SEC);
+    usleep(philo->arg->time_to_eat * 1000);
     drop_the_fork(philo);
 }
 
 void philo_sleeping(t_philo *philo)
 {
     monitoring(philo, SLEEP);
-    usleep(philo->arg->time_sleep * MICRO_SEC);
+    gusleep(philo->arg->time_sleep * 1000);
 }
 
 void *routine(void *_philo)
@@ -31,13 +31,17 @@ void *routine(void *_philo)
     t_philo *philo;
     philo = (t_philo *)_philo;
 
-    if(philo == NULL || philo->arg == NULL)
-        return(NULL);
+    // printf("======>%d\n", philo->arg->nbrphilo);
     if(philo->arg->nbrphilo == 1)
     {
         monitoring(philo, FORK);
         return(NULL);
     }
+    if (philo->nbr_philo1 % 2 != 0)
+    {
+        usleep(500);
+    }
+    
     
     while(1)
     {
@@ -59,9 +63,9 @@ int launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
 {
     int i = 0;
 
+        philo->arg->start_time = get_current_time();
     while(arg->nbrphilo > i)
     {
-        philo[i].start_time = get_current_time();
         if(pthread_create(&philo[i].t_my_enum, NULL, routine, &philo[i]) != 0)
         {
             main_destroy(arg, philo ,forks, FAIL_THREAD);
@@ -85,9 +89,8 @@ int launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
 
 void monitoring(t_philo *philos, t_my_enum action_enum)
 {
-    char *current_action[6] = {EAT_STR, THINK_STR,
-		SLEEP_STR, DEAD_STR , TAKE_FORK_STR, DROP_FORK_STR};
-
+    char *current_action[6] = {DEAD_STR, EAT_STR, THINK_STR,
+		SLEEP_STR, TAKE_FORK_STR, DROP_FORK_STR};
     suseconds_t timesta;
 
     pthread_mutex_lock(&philos->arg->mutex);
@@ -97,7 +100,8 @@ void monitoring(t_philo *philos, t_my_enum action_enum)
         return ;
     }
 
-    timesta = get_current_time() - philos->start_time;
+    timesta = get_current_time() - philos->arg->start_time;
+    // printf("%d\n", philos->nbr_philo1);
     printf("%d %d %s", timesta, philos->nbr_philo1, current_action[action_enum]);
     pthread_mutex_unlock(&philos->arg->mutex);
 }

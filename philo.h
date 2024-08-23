@@ -25,6 +25,7 @@ typedef struct s_arg
     int     time_sleep;
     int     times_each_philosopher_must_eat;
     pthread_mutex_t     mutex;
+    suseconds_t     start_time;
     bool    the_end;
 } t_arg;
 
@@ -36,7 +37,6 @@ typedef struct s_philo
     pthread_mutex_t     *left;
     pthread_mutex_t     *right;
     int     meals_eat;
-    suseconds_t     start_time;
     suseconds_t     last_meal;
     pthread_t       t_my_enum;
     t_arg       *arg;
@@ -45,12 +45,12 @@ typedef struct s_philo
 // struct of enum
 typedef enum e_my_enum
 {
-    EAT,
-    THINK,
-    SLEEP,
-    DEAD,
-    FORK,
-    DROP,
+ 	DEAD,
+	EAT,
+	THINK,
+	SLEEP,
+	FORK,
+	DROP,
 
 }   t_my_enum;
 
@@ -75,7 +75,9 @@ int     launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks);
 void monitoring(t_philo *philos, t_my_enum action_enum);
 
 // get the time
-suseconds_t get_current_time();
+suseconds_t	get_current_time(void);
+int	ft_usleep(size_t milliseconds);
+
 
 // the forks
 void pick_the_fork(t_philo *philo);
