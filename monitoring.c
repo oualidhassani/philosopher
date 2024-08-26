@@ -6,7 +6,7 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:07:57 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 15:15:16 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:24:01 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,29 +65,29 @@ void	*routine(void *_philo)
 
 int	launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
 {
-	int	i;
+	int			i;
+	pthread_t	guard_thread;
 
-	i = 0;
+	i = -1;
 	philo->arg->start_time = get_time();
-	while (arg->nbrphilo > i)
+	while (arg->nbrphilo > ++i)
 	{
 		if (pthread_create(&philo[i].t_my_enum, NULL, routine, &philo[i]) != 0)
 		{
 			main_destroy(arg, philo, forks, FAIL_THREAD);
 			return (1);
 		}
-		i++;
 	}
-	guard(philo);
-	i = 0;
-	while (i < philo->arg->nbrphilo)
+	pthread_create(&guard_thread, NULL, guard, (void *)philo);
+	pthread_join(guard_thread, NULL);
+	i = -1;
+	while (++i < philo->arg->nbrphilo)
 	{
 		if (pthread_join(philo[i].t_my_enum, NULL) != 0)
 		{
 			main_destroy(arg, philo, forks, JOIN_FAIL);
 			return (1);
 		}
-		i++;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:07:05 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 15:07:17 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/26 15:30:11 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,15 @@ void	*guard(void *philos_void)
 	satisfed = 0;
 	while (1)
 	{
-		i = 0;
 		pthread_mutex_lock(&philos->arg->mutex);
-		while (i < philos->arg->nbrphilo)
+		i = -1;
+		while (++i < philos->arg->nbrphilo)
 		{
 			if (is_philo_dead(&philos[i], &satisfed))
 			{
 				pthread_mutex_unlock(&philos->arg->mutex);
 				return (NULL);
 			}
-			i++;
 		}
 		if (satisfed == philos->arg->nbrphilo)
 		{
@@ -70,5 +69,4 @@ void	*guard(void *philos_void)
 		}
 		pthread_mutex_unlock(&philos->arg->mutex);
 	}
-	return (NULL);
 }
