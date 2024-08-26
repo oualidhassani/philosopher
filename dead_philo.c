@@ -6,7 +6,7 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:07:05 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 15:30:11 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:46:56 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	all_of_them_eat(t_philo *philos)
 {
 	philos->arg->the_end = true;
 	printf("all the philosophers already %d meals\n", philos->arg->time_to_eat);
-	pthread_mutex_unlock(&philos->arg->mutex);
 }
 
 bool	starv(t_philo *philo)
@@ -56,10 +55,7 @@ void	*guard(void *philos_void)
 		while (++i < philos->arg->nbrphilo)
 		{
 			if (is_philo_dead(&philos[i], &satisfed))
-			{
-				pthread_mutex_unlock(&philos->arg->mutex);
 				return (NULL);
-			}
 		}
 		if (satisfed == philos->arg->nbrphilo)
 		{

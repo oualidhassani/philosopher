@@ -6,7 +6,7 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:07:36 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 15:28:17 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:26:41 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ pthread_mutex_t	*init_forks(t_arg *arg)
 	fork = malloc(arg->nbrphilo * sizeof(pthread_mutex_t));
 	i = 0;
 	if (!fork)
-		main_destroy(arg, NULL, NULL, MALLOC_FAIL);
+		main_destroy(arg, NULL, fork, MALLOC_FAIL);
 	while (arg->nbrphilo > i)
 	{
 		if (pthread_mutex_init(&fork[i], NULL) != 0)

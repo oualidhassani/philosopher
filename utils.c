@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohassani <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:08:19 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 15:08:20 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:24:09 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,18 +29,22 @@ void	destroy(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
 	i = 0;
 	if (arg)
 		pthread_mutex_destroy(&arg->mutex);
-	while (i > arg->nbrphilo)
+	while (i < arg->nbrphilo)
 	{
 		pthread_mutex_destroy(&forks[i]);
 		philo[i].left = NULL;
-		philo[i].left = NULL;
+		philo[i].right = NULL;
 		i++;
 	}
-	free(forks);
 	if (philo)
 	{
 		free(philo);
 		philo = NULL;
+	}
+	if (forks)
+	{
+		free(forks);
+		forks = NULL;
 	}
 }
 

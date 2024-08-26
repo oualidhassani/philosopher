@@ -6,7 +6,7 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:08:33 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 15:28:21 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:33:01 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@
 # define FAIL_THREAD "fail the creation of the thread"
 # define JOIN_FAIL "fail the join"
 # define MALLOC_FAIL "malloc fail"
-# define ALL_DONE "destroy all after launch the threads"
 # define PARSING_ERROR "error in arguments"
 
 # define MICRO_SEC 1000
@@ -100,4 +99,5 @@ void				philo_sleeping(t_philo *philo);
 // the dead of the philos
 bool				starv(t_philo *philo);
 void				*guard(void *philos_void);
+void				destroy(t_arg *arg, t_philo *philo, pthread_mutex_t *forks);
 #endif

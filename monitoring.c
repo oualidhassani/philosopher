@@ -6,7 +6,7 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:07:57 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 15:24:01 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/26 18:54:20 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,15 @@ int	launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
 
 void	monitoring(t_philo *philos, t_my_enum action_enum)
 {
-	char		*current_action[6] = {DEAD_STR, EAT_STR, THINK_STR, SLEEP_STR,
-				TAKE_FORK_STR, DROP_FORK_STR};
+	char		*current_action[6];
 	suseconds_t	timesta;
 
+	current_action[0] = DEAD_STR;
+	current_action[1] = EAT_STR;
+	current_action[2] = THINK_STR;
+	current_action[3] = SLEEP_STR;
+	current_action[4] = TAKE_FORK_STR;
+	current_action[5] = DROP_FORK_STR;
 	pthread_mutex_lock(&philos->arg->mutex);
 	if (philos->arg->the_end)
 	{
