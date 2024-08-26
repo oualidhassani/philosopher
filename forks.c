@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
- void	pick_the_fork(t_philo *philo)
+void	pick_the_fork(t_philo *philo)
 {
 	if (philo->nbr_philo1 % 2 == 0)
 	{
@@ -30,7 +30,7 @@
 	}
 }
 
- void	drop_the_fork(t_philo *philo)
+void	drop_the_fork(t_philo *philo)
 {
 	if (philo->nbr_philo1 % 2 == 0)
 	{
