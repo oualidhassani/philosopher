@@ -15,14 +15,14 @@ void eat_that_meal(t_philo *philo)
     philo->last_meal = get_time();
     pthread_mutex_unlock(&philo->arg->mutex);
     monitoring(philo, EAT);
-    usleep(philo->arg->time_to_eat * 1000);
+    ft_usleep(philo->arg->time_to_eat);
     drop_the_fork(philo);
 }
 
 void philo_sleeping(t_philo *philo)
 {
     monitoring(philo, SLEEP);
-    usleep(philo->arg->time_sleep * 1000);
+    ft_usleep(philo->arg->time_sleep);
 }
 
 void *routine(void *_philo)
@@ -96,6 +96,6 @@ void monitoring(t_philo *philos, t_my_enum action_enum)
 
     timesta = get_time() - philos->arg->start_time;
     // printf("%d\n", philos->nbr_philo1);
-    printf("%d %d %s", timesta, philos->nbr_philo1, current_action[action_enum]);
+    printf("%ld %d %s", timesta, philos->nbr_philo1, current_action[action_enum]);
     pthread_mutex_unlock(&philos->arg->mutex);
 }

@@ -87,6 +87,6 @@ void philo_sleeping(t_philo *philo);
 
 // the dead of the philos 
 static inline bool	starv(t_philo *philo);
-void guard(t_philo *philos);
+void *guard(void *philos_void);
 
 #endif

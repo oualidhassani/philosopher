@@ -10,7 +10,7 @@ void all_of_them_eat(t_philo *philos)
 static inline bool	starv(t_philo *philo)
 {
 	return (((get_time() - philo->last_meal)
-			>= philo->arg->time_to_die));
+			>= philo->arg->time_to_die + 1));
 }
 
 bool is_philo_dead(t_philo *philos, int *satisfed_philo)
@@ -29,22 +29,36 @@ bool is_philo_dead(t_philo *philos, int *satisfed_philo)
     return(false);
 }
 
-void guard(t_philo *philos)
+void *guard(void *philos_void)
 {
-    int satisfed;
+    t_philo *philos = (t_philo *)philos_void; 
+    int satisfed = 0;
+
     while (1)
     {
-        int i;
-        i = 0;
-        pthread_mutex_lock(&philos->arg->mutex);
-        while(philos->arg->nbrphilo > i)
+        int i = 0;
+        pthread_mutex_lock(&philos->arg->mutex); 
+        
+        while (i < philos->arg->nbrphilo)
         {
             if (is_philo_dead(&philos[i], &satisfed))
-                return;
+            {
+                pthread_mutex_unlock(&philos->arg->mutex); 
+                return NULL; 
+            }
             i++;
         }
-        if(satisfed == philos->arg->nbrphilo)
-            return(all_of_them_eat(philos));
-        pthread_mutex_unlock(&philos->arg->mutex);
+        if (satisfed == philos->arg->nbrphilo)
+        {
+            all_of_them_eat(philos);
+            pthread_mutex_unlock(&philos->arg->mutex);
+            return(NULL); 
+        }
+
+        pthread_mutex_unlock(&philos->arg->mutex);  
     }
+
+    return NULL;
 }
+
+
