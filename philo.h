@@ -75,7 +75,7 @@ int     launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks);
 void monitoring(t_philo *philos, t_my_enum action_enum);
 
 // get the time
-suseconds_t	get_current_time(void);
+suseconds_t	get_time(void);
 int	ft_usleep(size_t milliseconds);
 
 
@@ -86,7 +86,7 @@ void eat_that_meal(t_philo *philo);
 void philo_sleeping(t_philo *philo);
 
 // the dead of the philos 
-suseconds_t starv(t_philo *philos);
+static inline bool	starv(t_philo *philo);
 void guard(t_philo *philos);
 
 #endif

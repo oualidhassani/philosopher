@@ -7,9 +7,10 @@ void all_of_them_eat(t_philo *philos)
     pthread_mutex_unlock(&philos->arg->mutex);
 }
 
-suseconds_t starv(t_philo *philos)
+static inline bool	starv(t_philo *philo)
 {
-    return((get_current_time() - philos->last_meal) >= philos->arg->time_to_die);
+	return (((get_time() - philo->last_meal)
+			>= philo->arg->time_to_die));
 }
 
 bool is_philo_dead(t_philo *philos, int *satisfed_philo)

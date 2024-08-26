@@ -12,7 +12,7 @@ void eat_that_meal(t_philo *philo)
     pick_the_fork(philo);
     pthread_mutex_lock(&philo->arg->mutex);
     philo->meals_eat += 1;
-    philo->last_meal = get_current_time();
+    philo->last_meal = get_time();
     pthread_mutex_unlock(&philo->arg->mutex);
     monitoring(philo, EAT);
     usleep(philo->arg->time_to_eat * 1000);
@@ -22,7 +22,7 @@ void eat_that_meal(t_philo *philo)
 void philo_sleeping(t_philo *philo)
 {
     monitoring(philo, SLEEP);
-    gusleep(philo->arg->time_sleep * 1000);
+    usleep(philo->arg->time_sleep * 1000);
 }
 
 void *routine(void *_philo)
@@ -37,12 +37,6 @@ void *routine(void *_philo)
         monitoring(philo, FORK);
         return(NULL);
     }
-    if (philo->nbr_philo1 % 2 != 0)
-    {
-        usleep(500);
-    }
-    
-    
     while(1)
     {
         pthread_mutex_lock(&philo->arg->mutex);
@@ -63,7 +57,7 @@ int launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
 {
     int i = 0;
 
-        philo->arg->start_time = get_current_time();
+        philo->arg->start_time = get_time();
     while(arg->nbrphilo > i)
     {
         if(pthread_create(&philo[i].t_my_enum, NULL, routine, &philo[i]) != 0)
@@ -100,7 +94,7 @@ void monitoring(t_philo *philos, t_my_enum action_enum)
         return ;
     }
 
-    timesta = get_current_time() - philos->arg->start_time;
+    timesta = get_time() - philos->arg->start_time;
     // printf("%d\n", philos->nbr_philo1);
     printf("%d %d %s", timesta, philos->nbr_philo1, current_action[action_enum]);
     pthread_mutex_unlock(&philos->arg->mutex);

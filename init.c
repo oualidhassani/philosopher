@@ -14,7 +14,7 @@ t_philo    *init_philo(t_arg *arg, pthread_mutex_t *the_forks)
         philo[i].left = &the_forks[i];
         philo[i].right = &the_forks[(i + 1) % arg->nbrphilo];
         philo[i].meals_eat = 0;
-        philo[i].last_meal = get_current_time();
+        philo[i].last_meal = get_time();
         philo[i].arg = arg;
         i++;
     }
@@ -62,20 +62,20 @@ pthread_mutex_t *init_forks(t_arg *arg)
     return(fork);
 }
 
-int	ft_usleep(size_t milliseconds)
+int ft_usleep(size_t milliseconds)
 {
-	size_t	start;
+	size_t start;
+	start = get_time();
 
-	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds)
+	while((get_time() - start) < milliseconds)
 		usleep(500);
-	return (0);
+	return(0);
 }
 
-suseconds_t get_current_time()
+suseconds_t	get_time(void)
 {
-    struct timeval time;
+	struct timeval	now;
 
-    gettimeofday(&time, NULL);
-    return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+	gettimeofday(&now, NULL);
+	return ((now.tv_sec * 1000) + (now.tv_usec / 1000));
 }
