@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dead_philo.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/26 15:07:05 by ohassani          #+#    #+#             */
+/*   Updated: 2024/08/26 15:07:17 by ohassani         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void all_of_them_eat(t_philo *philos)
@@ -7,7 +19,7 @@ void all_of_them_eat(t_philo *philos)
     pthread_mutex_unlock(&philos->arg->mutex);
 }
 
-static inline bool	starv(t_philo *philo)
+bool	starv(t_philo *philo)
 {
 	return (((get_time() - philo->last_meal)
 			>= philo->arg->time_to_die + 1));
@@ -57,7 +69,6 @@ void *guard(void *philos_void)
 
         pthread_mutex_unlock(&philos->arg->mutex);  
     }
-
     return NULL;
 }
 

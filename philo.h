@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ohassani <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/08/26 15:08:33 by ohassani          #+#    #+#             */
+/*   Updated: 2024/08/26 15:08:34 by ohassani         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 #define PHILO_H
 
@@ -86,7 +98,7 @@ void eat_that_meal(t_philo *philo);
 void philo_sleeping(t_philo *philo);
 
 // the dead of the philos 
-static inline bool	starv(t_philo *philo);
+bool	starv(t_philo *philo);
 void *guard(void *philos_void);
 
 #endif
