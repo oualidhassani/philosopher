@@ -6,7 +6,7 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:08:19 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 18:24:09 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/29 14:06:50 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,30 +71,31 @@ void	free_forks(pthread_mutex_t *forks, int until)
 	free(forks);
 }
 
-int	ft_atoi(const char *str)
+long	ft_atoi(char *str)
 {
-	int	i;
-	int	res;
-	int	sign;
+	int		i;
+	long	res;
+	int		sign;
 
 	i = 0;
 	res = 0;
 	sign = 1;
 	while ((str[i] > 8 && str[i] < 14) || str[i] == 32)
+		i++;
+	if (str[i] == '-' || str[i] == '+')
 	{
+		if (str[i] == '-')
+			sign = -1;
 		i++;
+		if (str[i] == '+' || str[i] == '-' || str[i] == '\0')
+			return (2147483649);
 	}
-	if (str[i] == '-')
-	{
-		sign = -1;
-		i++;
-	}
-	else if (str[i] == '+')
-		i++;
 	while (str[i] > 47 && str[i] < 58)
 	{
 		res = (res * 10) + str[i] - 48;
 		i++;
+		if (res * sign > 2147483647 || res * sign < -2147483648)
+			return (2147483649);
 	}
 	return (res * sign);
 }

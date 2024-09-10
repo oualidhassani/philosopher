@@ -6,7 +6,7 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/12 20:34:38 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 18:33:08 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/31 16:43:14 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	main(int argc, char **av)
 	pthread_mutex_t	*fork;
 	t_philo			*philos;
 
+	(void)argc;
 	if (parsing(argc, av))
 		return (EXIT_FAILURE);
 	if (!init_arg(&arg, av))

@@ -6,11 +6,29 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 19:19:17 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 15:08:09 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/31 17:06:41 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	create_and_join_guard_thread(t_arg *arg, t_philo *philo,
+		pthread_mutex_t *forks)
+{
+	pthread_t	guard_thread;
+
+	if (pthread_create(&guard_thread, NULL, guard, (void *)philo) != 0)
+	{
+		main_destroy(arg, philo, forks, FAIL_THREAD);
+		return (1);
+	}
+	if (pthread_join(guard_thread, NULL) != 0)
+	{
+		main_destroy(arg, philo, forks, JOIN_FAIL);
+		return (1);
+	}
+	return (0);
+}
 
 int	ft_isdigit(char c)
 {
@@ -26,9 +44,12 @@ int	ft_is_digit1(char **av)
 	int	j;
 
 	i = 1;
+	skip_spaces(av);
 	while (av[i])
 	{
 		j = 0;
+		if (av[i][0] == '+')
+			j = 1;
 		while (av[i][j])
 		{
 			if (ft_isdigit(av[i][j]) == 0)

@@ -6,7 +6,7 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:07:36 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 18:26:41 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/31 17:25:50 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ t_philo	*init_philo(t_arg *arg, pthread_mutex_t *the_forks)
 	int		i;
 
 	philo = malloc(arg->nbrphilo * sizeof(t_philo));
+	if (!philo)
+		main_destroy(arg, philo, the_forks, MALLOC_FAIL);
 	i = 0;
 	while (i < arg->nbrphilo)
 	{
@@ -42,8 +44,14 @@ bool	init_arg(t_arg *arg, char **av)
 	if (av[5])
 		arg->times_each_philosopher_must_eat = ft_atoi(av[5]);
 	if (arg->nbrphilo == 0 || arg->time_to_die == 0 || arg->time_sleep == 0
-		|| arg->time_to_eat == 0)
+		|| arg->time_to_eat == 0 || arg->nbrphilo == 2147483649
+		|| arg->time_to_die == 2147483649 || arg->time_sleep == 2147483649
+		|| arg->time_to_eat == 2147483649
+		|| arg->times_each_philosopher_must_eat == 2147483649)
+	{
 		ft_putstr_fd("Error\n", 2);
+		return (false);
+	}
 	if (pthread_mutex_init(&arg->mutex, NULL) != 0)
 	{
 		main_destroy(0, NULL, NULL, INIT_MUTEX);

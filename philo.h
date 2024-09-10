@@ -6,7 +6,7 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:08:33 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 18:33:01 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/31 16:44:54 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,14 @@
 # define MALLOC_FAIL "malloc fail"
 # define PARSING_ERROR "error in arguments"
 
-# define MICRO_SEC 1000
 // struct of agrs
 typedef struct s_arg
 {
-	int				nbrphilo;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_sleep;
-	int				times_each_philosopher_must_eat;
+	long			nbrphilo;
+	long			time_to_die;
+	long			time_to_eat;
+	long			time_sleep;
+	long			times_each_philosopher_must_eat;
 	pthread_mutex_t	mutex;
 	suseconds_t		start_time;
 	bool			the_end;
@@ -61,7 +60,6 @@ typedef enum e_my_enum
 	THINK,
 	SLEEP,
 	FORK,
-	DROP,
 }					t_my_enum;
 
 // parsing
@@ -73,7 +71,7 @@ bool				init_arg(t_arg *arg, char **av);
 t_philo				*init_philo(t_arg *arg, pthread_mutex_t *the_forks);
 
 // utils
-int					ft_atoi(const char *str);
+long				ft_atoi(char *str);
 void				ft_putstr_fd(char *s, int fd);
 void				free_forks(pthread_mutex_t *forks, int until);
 
@@ -85,6 +83,8 @@ int					main_destroy(t_arg *arg, t_philo *philo,
 int					launch_thread(t_arg *arg, t_philo *philo,
 						pthread_mutex_t *forks);
 void				monitoring(t_philo *philos, t_my_enum action_enum);
+int					create_and_join_guard_thread(t_arg *arg, t_philo *philo,
+						pthread_mutex_t *forks);
 
 // get the time
 suseconds_t			get_time(void);
@@ -100,4 +100,6 @@ void				philo_sleeping(t_philo *philo);
 bool				starv(t_philo *philo);
 void				*guard(void *philos_void);
 void				destroy(t_arg *arg, t_philo *philo, pthread_mutex_t *forks);
+bool				is_philo_dead(t_philo *philos, int *satisfed_philo);
+void				skip_spaces(char **av);
 #endif

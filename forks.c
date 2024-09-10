@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohassani <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:07:30 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 15:07:31 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/31 16:45:22 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,36 @@ void	drop_the_fork(t_philo *philo)
 	if (philo->nbr_philo1 % 2 == 0)
 	{
 		pthread_mutex_unlock(philo->left);
-		monitoring(philo, DROP);
 		pthread_mutex_unlock(philo->right);
-		monitoring(philo, DROP);
 	}
 	else
 	{
 		pthread_mutex_unlock(philo->right);
-		monitoring(philo, DROP);
 		pthread_mutex_unlock(philo->left);
-		monitoring(philo, DROP);
+	}
+}
+
+void	skip_spaces(char **av)
+{
+	int		i;
+	char	*start;
+	char	*end;
+
+	i = 0;
+	while (av[i])
+	{
+		start = av[i];
+		end = av[i];
+		while (*start == ' ' || *start == '\t')
+			start++;
+		end = start;
+		while (*end != '\0')
+			end++;
+		end--;
+		while (end > start && (*end == ' ' || *end == '\t'))
+			end--;
+		*(end + 1) = '\0';
+		av[i] = start;
+		i++;
 	}
 }

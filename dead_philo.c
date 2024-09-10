@@ -6,7 +6,7 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:07:05 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 18:46:56 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/30 21:22:51 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,17 @@
 void	all_of_them_eat(t_philo *philos)
 {
 	philos->arg->the_end = true;
-	printf("all the philosophers already %d meals\n", philos->arg->time_to_eat);
 }
 
 bool	starv(t_philo *philo)
 {
-	return (((get_time() - philo->last_meal) >= philo->arg->time_to_die + 1));
+	return (((get_time() - philo->last_meal) >= philo->arg->time_to_die));
 }
 
 bool	is_philo_dead(t_philo *philos, int *satisfed_philo)
 {
 	if (philos->arg->times_each_philosopher_must_eat > 0
-		&& philos->meals_eat >= philos->arg->times_each_philosopher_must_eat)
+		&& philos->meals_eat > philos->arg->times_each_philosopher_must_eat)
 		*satisfed_philo += 1;
 	if (starv(philos))
 	{

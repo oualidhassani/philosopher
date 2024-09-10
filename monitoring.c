@@ -6,18 +6,17 @@
 /*   By: ohassani <ohassani@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/26 15:07:57 by ohassani          #+#    #+#             */
-/*   Updated: 2024/08/26 18:54:20 by ohassani         ###   ########.fr       */
+/*   Updated: 2024/08/31 17:07:13 by ohassani         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 #define TAKE_FORK_STR "has taken a fork\n"
-#define DROP_FORK_STR "has dropped a fork\n"
-#define EAT_STR "is eating \n"
-#define THINK_STR "is thinking \n"
-#define SLEEP_STR "is sleeping \n"
-#define DEAD_STR "is dead \n"
+#define EAT_STR "is eating\n"
+#define THINK_STR "is thinking\n"
+#define SLEEP_STR "is sleeping\n"
+#define DEAD_STR "died\n"
 
 void	eat_that_meal(t_philo *philo)
 {
@@ -59,6 +58,7 @@ void	*routine(void *_philo)
 		eat_that_meal(philo);
 		philo_sleeping(philo);
 		monitoring(philo, THINK);
+		ft_usleep(5);
 	}
 	return (NULL);
 }
@@ -66,7 +66,6 @@ void	*routine(void *_philo)
 int	launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
 {
 	int			i;
-	pthread_t	guard_thread;
 
 	i = -1;
 	philo->arg->start_time = get_time();
@@ -78,8 +77,8 @@ int	launch_thread(t_arg *arg, t_philo *philo, pthread_mutex_t *forks)
 			return (1);
 		}
 	}
-	pthread_create(&guard_thread, NULL, guard, (void *)philo);
-	pthread_join(guard_thread, NULL);
+	if (create_and_join_guard_thread(arg, philo, forks) != 0)
+		return (1);
 	i = -1;
 	while (++i < philo->arg->nbrphilo)
 	{
@@ -102,7 +101,6 @@ void	monitoring(t_philo *philos, t_my_enum action_enum)
 	current_action[2] = THINK_STR;
 	current_action[3] = SLEEP_STR;
 	current_action[4] = TAKE_FORK_STR;
-	current_action[5] = DROP_FORK_STR;
 	pthread_mutex_lock(&philos->arg->mutex);
 	if (philos->arg->the_end)
 	{
